@@ -27,15 +27,6 @@ func env(name string, defaultValue interface{}) string {
 	return fmt.Sprintf("%v", defaultValue)
 }
 
-func writeConfig(config *generator.Config, file string) error {
-	buf, err := config.Compile()
-	if err != nil {
-		return err
-	}
-
-	return writeFile(buf, file)
-}
-
 func NewServerConfig() (*generator.Config, error) {
 	config := generator.New()
 
@@ -133,17 +124,26 @@ func GenOpenVPNStaticKey() ([]byte, error) {
 	return buf, nil
 }
 
-func writeCert(cert []byte, file string) error {
+func WriteConfig(config *generator.Config, file string) error {
+	buf, err := config.Compile()
+	if err != nil {
+		return err
+	}
+
+	return writeFile(buf, file)
+}
+
+func WriteCert(cert []byte, file string) error {
 	return writeFile(pem.EncodeToMemory(&pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: cert,
 	}), file)
 }
 
-func writeKey(cert []byte, file string) error {
+func WriteKey(key []byte, file string) error {
 	return writeFile(pem.EncodeToMemory(&pem.Block{
 		Type:  "RSA PRIVATE KEY",
-		Bytes: cert,
+		Bytes: key,
 	}), file)
 }
 
