@@ -1,0 +1,6 @@
+*.conf
+*.crt
+*.csr
+*.pem
+*.key
+*.sw?
