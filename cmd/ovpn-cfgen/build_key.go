@@ -21,6 +21,8 @@ func buildKeyFn(cmd *cobra.Command, args []string) {
 	caCertFile, _ := cmd.Flags().GetString("ca-cert")
 	caCertBytes, err := readPemFile(caCertFile)
 	if err != nil {
+		cmd.Help()
+		fmt.Println("")
 		log.Fatal("failed to read certificate: ", err)
 	}
 
@@ -32,6 +34,8 @@ func buildKeyFn(cmd *cobra.Command, args []string) {
 	caCertKey, _ := cmd.Flags().GetString("ca-key")
 	caKeyBytes, err := readPemFile(caCertKey)
 	if err != nil {
+		cmd.Help()
+		fmt.Println("")
 		log.Fatal("failed to read private key: ", err)
 	}
 
@@ -40,10 +44,10 @@ func buildKeyFn(cmd *cobra.Command, args []string) {
 		log.Fatal("failed to parse private key: ", err)
 	}
 
-	commonname, _ := cmd.Flags().GetString("commonname")
-	basename := path.Base(commonname)
+	name, _ := cmd.Flags().GetString("name")
+	basename := path.Base(name)
 
-	clientCert, clientKey, err := certtool.BuildClientCertificate(caCertBytes, caKeyBytes, commonname)
+	clientCert, clientKey, err := certtool.BuildClientCertificate(caCertBytes, caKeyBytes, name)
 	if err != nil {
 		log.Fatal("failed to build server certificate: ", err)
 	}
@@ -69,7 +73,7 @@ func buildKeyFn(cmd *cobra.Command, args []string) {
 }
 
 func init() {
-	buildKeyCmd.Flags().StringP("commonname", "n", "client", "name of the client")
+	buildKeyCmd.Flags().StringP("name", "n", "client", "client's common name")
 	buildKeyCmd.Flags().StringP("ca-cert", "c", "ca.crt", "CA certificate path")
 	buildKeyCmd.Flags().StringP("ca-key", "k", "ca.key", "CA private key path")
 }

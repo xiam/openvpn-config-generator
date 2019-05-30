@@ -12,7 +12,7 @@ import (
 
 var buildCACmd = &cobra.Command{
 	Use:   "build-ca [OPTIONS]",
-	Short: "Create a self-signed Certificate Authority",
+	Short: "Create a self-signed CA Certificate",
 	Run:   buildCAFn,
 }
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -13,5 +13,8 @@ var rootCmd = &cobra.Command{
 }
 
 func rootCmdFn(cmd *cobra.Command, args []string) {
-	log.Printf("help")
+	if len(args) < 1 {
+		cmd.Help()
+		os.Exit(0)
+	}
 }
