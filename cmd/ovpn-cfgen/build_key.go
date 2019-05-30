@@ -11,13 +11,13 @@ import (
 	"path"
 )
 
-var buildKeyServerCmd = &cobra.Command{
-	Use:   "build-key-server [OPTIONS]",
-	Short: "Create and sign a server certificate",
-	Run:   buildKeyServerFn,
+var buildKeyCmd = &cobra.Command{
+	Use:   "build-key [OPTIONS]",
+	Short: "Create and sign a client certificate",
+	Run:   buildKeyFn,
 }
 
-func buildKeyServerFn(cmd *cobra.Command, args []string) {
+func buildKeyFn(cmd *cobra.Command, args []string) {
 	caCertFile, _ := cmd.Flags().GetString("ca-cert")
 	caCertBytes, err := readPemFile(caCertFile)
 	if err != nil {
@@ -43,7 +43,7 @@ func buildKeyServerFn(cmd *cobra.Command, args []string) {
 	commonname, _ := cmd.Flags().GetString("commonname")
 	basename := path.Base(commonname)
 
-	serverCert, serverKey, err := certtool.BuildServerCertificate(caCertBytes, caKeyBytes, commonname)
+	clientCert, clientKey, err := certtool.BuildClientCertificate(caCertBytes, caKeyBytes, commonname)
 	if err != nil {
 		log.Fatal("failed to build server certificate: ", err)
 	}
@@ -54,22 +54,22 @@ func buildKeyServerFn(cmd *cobra.Command, args []string) {
 	}
 
 	certFile := path.Join(basedir, fmt.Sprintf("%s.crt", basename))
-	if err := ovpncfg.WriteCert(serverCert, certFile); err != nil {
+	if err := ovpncfg.WriteCert(clientCert, certFile); err != nil {
 		log.Fatal("failed to write certificate: ", err)
 	}
 
 	keyFile := path.Join(basedir, fmt.Sprintf("%s.key", basename))
-	if err := ovpncfg.WriteKey(serverKey, keyFile); err != nil {
+	if err := ovpncfg.WriteKey(clientKey, keyFile); err != nil {
 		log.Fatal("failed to write key: ", err)
 	}
 
-	log.Printf(`Your new server certificate was successfully generated.`)
+	log.Printf(`Your new client certificate was successfully generated.`)
 	log.Printf(`certificate: %q`, certFile)
 	log.Printf(`private key: %q`, keyFile)
 }
 
 func init() {
-	buildKeyServerCmd.Flags().StringP("commonname", "n", "server", "common name of the certificate")
-	buildKeyServerCmd.Flags().StringP("ca-cert", "c", "ca.crt", "CA certificate path")
-	buildKeyServerCmd.Flags().StringP("ca-key", "k", "ca.key", "CA private key path")
+	buildKeyCmd.Flags().StringP("commonname", "n", "client", "name of the client")
+	buildKeyCmd.Flags().StringP("ca-cert", "c", "ca.crt", "CA certificate path")
+	buildKeyCmd.Flags().StringP("ca-key", "k", "ca.key", "CA private key path")
 }
