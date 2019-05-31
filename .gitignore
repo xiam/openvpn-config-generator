@@ -4,3 +4,5 @@
 *.pem
 *.key
 *.sw?
+*.ovpn
+*.tlsauth
