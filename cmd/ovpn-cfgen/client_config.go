@@ -69,6 +69,8 @@ func clientConfigFn(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal("could not write config file: ", err)
 	}
+
+	log.Printf(`Your new configuration file for OpenVPN client was written to: %q`, output)
 }
 
 func init() {
@@ -76,6 +78,6 @@ func init() {
 	clientConfigCmd.Flags().StringP("cert", "c", "client.crt", "Certificate")
 	clientConfigCmd.Flags().StringP("key", "k", "client.key", "Private key")
 	clientConfigCmd.Flags().StringP("tls-crypt", "t", "key.tlsauth", "TLS Authentication key")
-	clientConfigCmd.Flags().String("remote", "", "Remote address")
+	clientConfigCmd.Flags().String("remote", "", "Address of the remote OpenVPN server")
 	clientConfigCmd.Flags().StringP("output", "o", "client.ovpn", "Output file")
 }
