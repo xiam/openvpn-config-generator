@@ -1,8 +1,8 @@
 # ovpn-cfgen
 
-`ovpn-cfgen` is a configuration tool for
-[OpenVPN](https://openvpn.net/download-open-vpn/) that generates certificates
-and (portable) configuration files for OpenVPN that _just work_.
+`ovpn-cfgen` is a command line tool that generates certificates and (portable)
+configuration files for [OpenVPN](https://openvpn.net/download-open-vpn/) that
+_just work_.
 
 ## Installing `ovpn-cfgen`
 
