@@ -2,7 +2,7 @@
 
 `ovpn-cfgen` is a configuration tool for
 [OpenVPN](https://openvpn.net/download-open-vpn/) that generates certificates
-and configuration files for OpenVPN that _just work_.
+and (portable) configuration files for OpenVPN that _just work_.
 
 ## Installing `ovpn-cfgen`
 
@@ -54,13 +54,12 @@ CA certificate and key (`ca.crt` and `ca.key`), as well as the server
 
 ### Generate a server configuration file
 
-Create `dh.pem` and `key.tlsauth`:
+Create additional keys `dh.pem` and `key.tlsauth`:
 
 ```
 openssl dhparam -out dh.pem 2048
-```
+# takes a while...
 
-```
 openvpn --genkey --secret key.tlsauth
 ```
 
@@ -75,10 +74,29 @@ ovpn-cfgen server-config
 
 ```
 ovpn-cfgen client-config \
-  --remote 192.168.1.9 \
+  --remote 127.0.0.1 \
   --cert my-laptop.crt \
   --key my-laptop.key \
   --output my-laptop.ovpn
 
 # 2019/05/30 23:15:10 Your new client configuration file was written to: "my-laptop.ovpn"
+```
+
+## Using configuration files
+
+Spin up your OpenVPN server:
+
+```
+mkdir -p ccd
+sudo openvpn --config server.conf
+# ...
+# Thu May 30 23:44:21 2019 us=100431 my-laptop/127.0.0.1:58334 Incoming Data Channel: Cipher 'AES-256-GCM' initialized with 256 bit key
+```
+
+Spin up your OpenVPN client:
+
+```
+sudo openvpn --config my-laptop.ovpn
+# ...
+# Thu May 30 23:44:21 2019 Initialization Sequence Completed
 ```
