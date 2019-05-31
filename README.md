@@ -78,5 +78,6 @@ ovpn-cfgen client-config \
   --cert my-laptop.crt \
   --key my-laptop.key \
   --output my-laptop.ovpn
-2019/05/30 23:15:10 Your new configuration file for OpenVPN client was written to: "my-laptop.ovpn"
+
+# 2019/05/30 23:15:10 Your new configuration file for OpenVPN client was written to: "my-laptop.ovpn"
 ```
