@@ -86,7 +86,7 @@ func serverConfigFn(cmd *cobra.Command, args []string) {
 		log.Fatal("could not write config file: ", err)
 	}
 
-	log.Printf(`Your new configuration file for OpenVPN server was written to: %q`, output)
+	log.Printf(`Your new server configuration file was written to: %q`, output)
 }
 
 func init() {

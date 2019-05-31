@@ -1,6 +1,7 @@
 # ovpn-cfgen
 
-`ovpn-cfgen` is a configuration tool for openvpn that generates certificates
+`ovpn-cfgen` is a configuration tool for
+[OpenVPN](https://openvpn.net/download-open-vpn/) that generates certificates
 and configuration files for OpenVPN that _just work_.
 
 ## Installing `ovpn-cfgen`
@@ -46,8 +47,8 @@ openssl x509 -in my-laptop.crt -noout -text
 
 ## Using `ovpn-cfgen` to generate config files for OpenVPN
 
-The following recipe assumes you followed the steps above to build your CA
-certificate and key (`ca.crt` and `ca.key`), as well as the server
+The following recipe assumes you followed the steps above and that you have a
+CA certificate and key (`ca.crt` and `ca.key`), as well as the server
 (`server.crt` and `server.key`) and client (`my-laptop.crt` and
 `my-laptop.key`) key pairs.
 
@@ -67,7 +68,7 @@ Use the `server-config` command to generate a configuration file for OpenVPN ser
 
 ```
 ovpn-cfgen server-config
-# 2019/05/30 23:11:21 Your new configuration file for OpenVPN server was written to: "server.conf"
+# 2019/05/30 23:11:21 Your new server configuration file was written to: "server.conf"
 ```
 
 ### Generate a client configuration file
@@ -79,5 +80,5 @@ ovpn-cfgen client-config \
   --key my-laptop.key \
   --output my-laptop.ovpn
 
-# 2019/05/30 23:15:10 Your new configuration file for OpenVPN client was written to: "my-laptop.ovpn"
+# 2019/05/30 23:15:10 Your new client configuration file was written to: "my-laptop.ovpn"
 ```
