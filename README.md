@@ -82,7 +82,7 @@ ovpn-cfgen client-config \
 # 2019/05/30 23:15:10 Your new client configuration file was written to: "my-laptop.ovpn"
 ```
 
-## Using configuration files
+## Using your new configuration files
 
 Spin up your OpenVPN server:
 
