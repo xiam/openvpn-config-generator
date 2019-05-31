@@ -20,11 +20,11 @@ const (
 	defaultDNS2 = "8.8.4.4"
 )
 
-func env(name string, defaultValue interface{}) string {
+func env(name string, defaultValue interface{}) interface{} {
 	if value := os.Getenv(name); value != "" {
 		return value
 	}
-	return fmt.Sprintf("%v", defaultValue)
+	return defaultValue
 }
 
 func NewServerConfig() (*generator.Config, error) {
@@ -43,9 +43,6 @@ func NewServerConfig() (*generator.Config, error) {
 	config.MustSet("client-config-dir", "ccd")
 
 	config.MustAdd("push", "redirect-gateway def1 bypass-dhcp")
-
-	config.MustAdd("push", fmt.Sprintf("dhcp-option DNS %s", env("DNS1", defaultDNS1)))
-	config.MustAdd("push", fmt.Sprintf("dhcp-option DNS %s", env("DNS2", defaultDNS2)))
 
 	config.MustEnable("client-to-client")
 	config.MustSet("keepalive", 10, 120)
@@ -92,7 +89,6 @@ func NewClientConfig() (*generator.Config, error) {
 
 	config.MustSet("cipher", "AES-256-CBC")
 	config.MustEnable("nobind")
-	config.MustSet("link-mtu", 1550)
 	config.MustEnable("persist-key")
 	config.MustEnable("persist-tun")
 	config.MustEnable("comp-lzo")

@@ -135,7 +135,7 @@ e6adb40fca5c5463
 	assert.NoError(t, err)
 	assert.NotEmpty(t, buf)
 
-	err = writeConfig(config, "server.conf")
+	err = WriteConfig(config, "server.conf")
 	assert.NoError(t, err)
 }
 
@@ -259,7 +259,7 @@ e6adb40fca5c5463
 	assert.NoError(t, err)
 	assert.NotEmpty(t, buf)
 
-	err = writeConfig(config, "client.conf")
+	err = WriteConfig(config, "client.conf")
 	assert.NoError(t, err)
 }
 
@@ -279,12 +279,12 @@ func TestGenCertificates(t *testing.T) {
 	clientCert, clientKey, err := certtool.BuildClientCertificate(caCert, caKey, "client.local")
 	assert.NoError(t, err)
 
-	writeCert(caCert, "ca.crt")
-	writeCert(serverCert, "server.crt")
-	writeCert(clientCert, "client.crt")
+	WriteCert(caCert, "ca.crt")
+	WriteCert(serverCert, "server.crt")
+	WriteCert(clientCert, "client.crt")
 
-	writeKey(serverKey, "server.key")
-	writeKey(clientKey, "client.key")
+	WriteKey(serverKey, "server.key")
+	WriteKey(clientKey, "client.key")
 }
 
 func TestAutomaticConfig(t *testing.T) {
@@ -313,7 +313,7 @@ func TestAutomaticConfig(t *testing.T) {
 
 		config.Embed("tls-crypt", vpnStaticKey)
 
-		err = writeConfig(config, "server-auto.conf")
+		err = WriteConfig(config, "server-auto.conf")
 		assert.NoError(t, err)
 	}
 
@@ -328,7 +328,7 @@ func TestAutomaticConfig(t *testing.T) {
 
 		config.Embed("tls-crypt", vpnStaticKey)
 
-		err = writeConfig(config, "client-auto.conf")
+		err = WriteConfig(config, "client-auto.conf")
 		assert.NoError(t, err)
 	}
 }

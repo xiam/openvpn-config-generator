@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/pem"
+	"fmt"
 	"github.com/spf13/cobra"
 	ovpncfg "github.com/xiam/openvpn-config-generator"
 	"io/ioutil"
@@ -22,11 +23,17 @@ func serverConfigFn(cmd *cobra.Command, args []string) {
 	tlsKey, _ := cmd.Flags().GetString("tls-crypt")
 	output, _ := cmd.Flags().GetString("output")
 
+	network, _ := cmd.Flags().GetString("network")
+	netmask, _ := cmd.Flags().GetString("netmask")
+
+	dns1, _ := cmd.Flags().GetString("dns1")
+	dns2, _ := cmd.Flags().GetString("dns2")
+
 	checkFile(cmd, caCert, "missing CA certificate")
 	checkFile(cmd, cert, "missing certificate")
 	checkFile(cmd, key, "missing private key")
 	checkFile(cmd, dhKey, "missing Diffie-Hellman key")
-	checkFile(cmd, dhKey, "missing TLS Authentication Key")
+	checkFile(cmd, tlsKey, "missing TLS Authentication Key")
 
 	caCertBytes, err := readPemFile(caCert)
 	if err != nil {
@@ -58,6 +65,13 @@ func serverConfigFn(cmd *cobra.Command, args []string) {
 		log.Fatal("failed to create server config")
 	}
 
+	serverValue := []interface{}{network, netmask}
+	config.MustSet("server", serverValue...)
+	config.MustSet("route", serverValue...)
+
+	config.MustAdd("push", fmt.Sprintf("dhcp-option DNS %s", dns1))
+	config.MustAdd("push", fmt.Sprintf("dhcp-option DNS %s", dns2))
+
 	config.MustEmbed("ca", pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: caCertBytes}))
 
 	config.MustEmbed("cert", pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: certBytes}))
@@ -79,5 +93,9 @@ func init() {
 	serverConfigCmd.Flags().StringP("key", "k", "server.key", "Private key")
 	serverConfigCmd.Flags().StringP("dh", "d", "dh.pem", "Diffie-Helman key exchange file")
 	serverConfigCmd.Flags().StringP("tls-crypt", "t", "key.tlsauth", "TLS Authentication key")
+	serverConfigCmd.Flags().String("network", "10.9.0.0", "Network")
+	serverConfigCmd.Flags().String("netmask", "255.255.0.0", "Netmask")
+	serverConfigCmd.Flags().String("dns1", "8.8.8.8", "DNS1")
+	serverConfigCmd.Flags().String("dns2", "8.8.4.4", "DNS2")
 	serverConfigCmd.Flags().StringP("output", "o", "server.conf", "Output file")
 }
