@@ -16,7 +16,7 @@ var serverConfigCmd = &cobra.Command{
 }
 
 func serverConfigFn(cmd *cobra.Command, args []string) {
-	caCert, _ := cmd.Flags().GetString("ca-cert")
+	caCert, _ := cmd.Flags().GetString("ca")
 	cert, _ := cmd.Flags().GetString("cert")
 	key, _ := cmd.Flags().GetString("key")
 	dhKey, _ := cmd.Flags().GetString("dh")
@@ -90,7 +90,7 @@ func serverConfigFn(cmd *cobra.Command, args []string) {
 }
 
 func init() {
-	serverConfigCmd.Flags().StringP("ca-cert", "r", "ca.crt", "CA certificate")
+	serverConfigCmd.Flags().StringP("ca", "r", "ca.crt", "CA certificate")
 	serverConfigCmd.Flags().StringP("cert", "c", "server.crt", "Certificate")
 	serverConfigCmd.Flags().StringP("key", "k", "server.key", "Private key")
 	serverConfigCmd.Flags().StringP("dh", "d", "dh.pem", "Diffie-Helman key exchange file")
