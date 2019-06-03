@@ -7,7 +7,6 @@ import (
 	ovpncfg "github.com/xiam/openvpn-config-generator"
 	"github.com/xiam/openvpn-config-generator/lib/certtool"
 	"log"
-	"os"
 	"path"
 )
 
@@ -18,7 +17,7 @@ var buildKeyServerCmd = &cobra.Command{
 }
 
 func buildKeyServerFn(cmd *cobra.Command, args []string) {
-	caCertFile, _ := cmd.Flags().GetString("ca-cert")
+	caCertFile, _ := cmd.Flags().GetString("cert")
 	caCertBytes, err := readPemFile(caCertFile)
 	if err != nil {
 		cmd.Help()
@@ -31,7 +30,7 @@ func buildKeyServerFn(cmd *cobra.Command, args []string) {
 		log.Fatal("failed to parse certificate: ", err)
 	}
 
-	caCertKey, _ := cmd.Flags().GetString("ca-key")
+	caCertKey, _ := cmd.Flags().GetString("key")
 	caKeyBytes, err := readPemFile(caCertKey)
 	if err != nil {
 		cmd.Help()
@@ -52,17 +51,14 @@ func buildKeyServerFn(cmd *cobra.Command, args []string) {
 		log.Fatal("failed to build server certificate: ", err)
 	}
 
-	basedir, err := os.Getwd()
-	if err != nil {
-		log.Fatal("failed to retrieve base dir: ", err)
-	}
+	workdir, _ := cmd.Flags().GetString("workdir")
 
-	certFile := path.Join(basedir, fmt.Sprintf("%s.crt", basename))
+	certFile := path.Join(workdir, fmt.Sprintf("%s.crt", basename))
 	if err := ovpncfg.WriteCert(serverCert, certFile); err != nil {
 		log.Fatal("failed to write certificate: ", err)
 	}
 
-	keyFile := path.Join(basedir, fmt.Sprintf("%s.key", basename))
+	keyFile := path.Join(workdir, fmt.Sprintf("%s.key", basename))
 	if err := ovpncfg.WriteKey(serverKey, keyFile); err != nil {
 		log.Fatal("failed to write key: ", err)
 	}
@@ -73,7 +69,8 @@ func buildKeyServerFn(cmd *cobra.Command, args []string) {
 }
 
 func init() {
-	buildKeyServerCmd.Flags().StringP("name", "n", "server", "server's common name")
-	buildKeyServerCmd.Flags().StringP("ca-cert", "c", "ca.crt", "CA certificate path")
-	buildKeyServerCmd.Flags().StringP("ca-key", "k", "ca.key", "CA private key path")
+	buildKeyServerCmd.Flags().String("name", "server", "Server's common name")
+	buildKeyServerCmd.Flags().String("workdir", ".", "Work directory")
+	buildKeyServerCmd.Flags().StringP("cert", "c", "ca.crt", "CA certificate path")
+	buildKeyServerCmd.Flags().StringP("key", "k", "ca.key", "CA private key path")
 }

@@ -15,7 +15,7 @@ var clientConfigCmd = &cobra.Command{
 }
 
 func clientConfigFn(cmd *cobra.Command, args []string) {
-	caCert, _ := cmd.Flags().GetString("ca-cert")
+	caCert, _ := cmd.Flags().GetString("ca")
 	cert, _ := cmd.Flags().GetString("cert")
 	key, _ := cmd.Flags().GetString("key")
 	tlsKey, _ := cmd.Flags().GetString("tls-crypt")
@@ -74,7 +74,7 @@ func clientConfigFn(cmd *cobra.Command, args []string) {
 }
 
 func init() {
-	clientConfigCmd.Flags().StringP("ca-cert", "r", "ca.crt", "CA certificate")
+	clientConfigCmd.Flags().StringP("ca", "r", "ca.crt", "CA certificate")
 	clientConfigCmd.Flags().StringP("cert", "c", "client.crt", "Certificate")
 	clientConfigCmd.Flags().StringP("key", "k", "client.key", "Private key")
 	clientConfigCmd.Flags().StringP("tls-crypt", "t", "key.tlsauth", "TLS Authentication key")
