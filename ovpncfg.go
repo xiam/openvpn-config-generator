@@ -61,7 +61,7 @@ func NewServerConfig() (*generator.Config, error) {
 	config.MustEnable("persist-key")
 	config.MustEnable("persist-tun")
 
-	config.MustSet("verb", 5)
+	config.MustSet("verb", "3")
 
 	config.MustSet("sndbuf", 0)
 	config.MustSet("rcvbuf", 0)
@@ -69,6 +69,7 @@ func NewServerConfig() (*generator.Config, error) {
 	config.MustAdd("push", "sndbuf 0")
 	config.MustAdd("push", "rcvbuf 0")
 
+	config.MustSet("tun-mtu", 1500)
 	config.MustSet("fragment", 0)
 	config.MustSet("mssfix", 0)
 
@@ -87,12 +88,16 @@ func NewClientConfig() (*generator.Config, error) {
 	config.MustSet("remote", "192.168.1.87", 1194)
 	config.MustSet("resolv-retry", "infinite")
 
-	config.MustSet("cipher", "AES-256-CBC")
+	config.MustSet("cipher", "AES-256-GCM")
 	config.MustEnable("nobind")
 	config.MustEnable("persist-key")
 	config.MustEnable("persist-tun")
 	config.MustEnable("comp-lzo")
 	config.MustSet("verb", "3")
+
+	config.MustSet("tun-mtu", 1500)
+	config.MustSet("fragment", 0)
+	config.MustSet("mssfix", 0)
 
 	return config, nil
 }
