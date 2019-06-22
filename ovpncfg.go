@@ -69,10 +69,6 @@ func NewServerConfig() (*generator.Config, error) {
 	config.MustAdd("push", "sndbuf 0")
 	config.MustAdd("push", "rcvbuf 0")
 
-	config.MustSet("tun-mtu", 1500)
-	config.MustSet("fragment", 0)
-	config.MustSet("mssfix", 0)
-
 	config.MustSet("remote-cert-eku", "TLS Web Client Authentication")
 
 	return config, nil
@@ -94,10 +90,6 @@ func NewClientConfig() (*generator.Config, error) {
 	config.MustEnable("persist-tun")
 	config.MustEnable("comp-lzo")
 	config.MustSet("verb", "3")
-
-	config.MustSet("tun-mtu", 1500)
-	config.MustSet("fragment", 0)
-	config.MustSet("mssfix", 0)
 
 	return config, nil
 }
