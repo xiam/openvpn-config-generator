@@ -42,7 +42,7 @@ func NewServerConfig() (*generator.Config, error) {
 	config.MustSet("ifconfig-pool-persist", "ipp.txt")
 	config.MustSet("client-config-dir", "ccd")
 
-	config.MustAdd("push", "redirect-gateway def1 bypass-dhcp")
+	//config.MustAdd("push", "redirect-gateway def1 bypass-dhcp")
 
 	config.MustEnable("client-to-client")
 	config.MustSet("keepalive", 10, 120)
