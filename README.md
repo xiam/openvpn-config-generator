@@ -7,7 +7,7 @@ _just work_.
 ## Installing `ovpn-cfgen`
 
 ```
-go install github.com/xiam/openvpn-config-generator/cmd/ovpn-cfgen
+go install github.com/xiam/openvpn-config-generator/cmd/ovpn-cfgen@latest
 ```
 
 ## Using `ovpn-cfgen` to generate certificates
