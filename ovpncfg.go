@@ -51,7 +51,7 @@ func NewServerConfig() (*generator.Config, error) {
 	config.MustAdd("push", "ping-restart 60")
 
 	config.MustSet("cipher", "AES-256-GCM")
-	config.MustSet("ncp-ciphers", "AES-256-GCM:AES-256-CBC:AES-128-GCM:AES-128-CBC:BF-CBC")
+	config.MustSet("ncp-ciphers", "AES-256-GCM:AES-256-CBC:AES-128-GCM:AES-128-CBC")
 
 	config.MustEnable("comp-lzo")
 
