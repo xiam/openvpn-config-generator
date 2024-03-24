@@ -3,11 +3,12 @@ package main
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/spf13/cobra"
-	ovpncfg "github.com/xiam/openvpn-config-generator"
-	"github.com/xiam/openvpn-config-generator/lib/certtool"
 	"log"
 	"path"
+
+	"github.com/spf13/cobra"
+	generator "github.com/xiam/openvpn-config-generator"
+	"github.com/xiam/openvpn-config-generator/lib/certtool"
 )
 
 var buildKeyServerCmd = &cobra.Command{
@@ -54,12 +55,12 @@ func buildKeyServerFn(cmd *cobra.Command, args []string) {
 	workdir, _ := cmd.Flags().GetString("workdir")
 
 	certFile := path.Join(workdir, fmt.Sprintf("%s.crt", basename))
-	if err := ovpncfg.WriteCert(serverCert, certFile); err != nil {
+	if err := generator.WriteCert(serverCert, certFile); err != nil {
 		log.Fatal("failed to write certificate: ", err)
 	}
 
 	keyFile := path.Join(workdir, fmt.Sprintf("%s.key", basename))
-	if err := ovpncfg.WriteKey(serverKey, keyFile); err != nil {
+	if err := generator.WriteKey(serverKey, keyFile); err != nil {
 		log.Fatal("failed to write key: ", err)
 	}
 

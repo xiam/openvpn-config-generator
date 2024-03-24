@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/pem"
 	"fmt"
-	"github.com/spf13/cobra"
-	ovpncfg "github.com/xiam/openvpn-config-generator"
 	"io/ioutil"
 	"log"
+
+	"github.com/spf13/cobra"
+	generator "github.com/xiam/openvpn-config-generator"
 )
 
 var serverConfigCmd = &cobra.Command{
@@ -60,7 +61,7 @@ func serverConfigFn(cmd *cobra.Command, args []string) {
 		log.Fatal("failed to load TLS Authentication key: ", err)
 	}
 
-	config, err := ovpncfg.NewServerConfig()
+	config, err := generator.NewServerConfig()
 	if err != nil {
 		log.Fatal("failed to create server config")
 	}
@@ -81,7 +82,7 @@ func serverConfigFn(cmd *cobra.Command, args []string) {
 
 	config.MustEmbed("tls-crypt", tlsKeyBytes)
 
-	err = ovpncfg.WriteConfig(config, output)
+	err = generator.WriteConfig(config, output)
 	if err != nil {
 		log.Fatal("could not write config file: ", err)
 	}
