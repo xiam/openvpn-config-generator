@@ -1,4 +1,4 @@
-package ovpncfg
+package generator
 
 import (
 	"crypto/rand"
@@ -45,15 +45,13 @@ func NewServerConfig() (*generator.Config, error) {
 	//config.MustAdd("push", "redirect-gateway def1 bypass-dhcp")
 
 	config.MustEnable("client-to-client")
-	config.MustSet("keepalive", 10, 120)
+	config.MustSet("keepalive", 30, 150)
 
-	config.MustAdd("push", "ping 15")
-	config.MustAdd("push", "ping-restart 60")
+	config.MustAdd("push", "ping 30")
+	config.MustAdd("push", "ping-restart 150")
 
-	config.MustSet("cipher", "AES-256-GCM")
+	config.MustSet("cipher", "AES-128-GCM")
 	config.MustSet("ncp-ciphers", "AES-256-GCM:AES-256-CBC:AES-128-GCM:AES-128-CBC")
-
-	config.MustEnable("comp-lzo")
 
 	config.MustSet("user", "nobody")
 	config.MustSet("group", "nobody")
@@ -63,11 +61,17 @@ func NewServerConfig() (*generator.Config, error) {
 
 	config.MustSet("verb", "3")
 
-	config.MustSet("sndbuf", 0)
-	config.MustSet("rcvbuf", 0)
+	config.MustSet("sndbuf", 512000)
+	config.MustSet("rcvbuf", 512000)
 
-	config.MustAdd("push", "sndbuf 0")
-	config.MustAdd("push", "rcvbuf 0")
+	config.MustAdd("push", "sndbuf 512000")
+	config.MustAdd("push", "rcvbuf 512000")
+
+	config.MustAdd("txqueuelen", 1000)
+
+	config.MustAdd("fast-io")
+
+	config.MustAdd("tun-mtu", 1470)
 
 	config.MustSet("remote-cert-eku", "TLS Web Client Authentication")
 
@@ -80,15 +84,12 @@ func NewClientConfig() (*generator.Config, error) {
 	config.MustEnable("client")
 	config.MustSet("dev", "tun")
 	config.MustSet("proto", env("PROTO", defaultProto))
-	config.MustSet("keysize", 256)
 	config.MustSet("remote", "192.168.1.87", 1194)
 	config.MustSet("resolv-retry", "infinite")
 
-	config.MustSet("cipher", "AES-256-GCM")
 	config.MustEnable("nobind")
 	config.MustEnable("persist-key")
 	config.MustEnable("persist-tun")
-	config.MustEnable("comp-lzo")
 	config.MustSet("verb", "3")
 
 	return config, nil

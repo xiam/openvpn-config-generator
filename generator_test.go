@@ -1,4 +1,4 @@
-package ovpncfg
+package generator
 
 import (
 	"encoding/pem"
