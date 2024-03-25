@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	ovpncfg "github.com/xiam/openvpn-config-generator"
-	"github.com/xiam/openvpn-config-generator/lib/certtool"
 	"log"
 	"path"
+
+	"github.com/spf13/cobra"
+	generator "github.com/xiam/openvpn-config-generator"
+	"github.com/xiam/openvpn-config-generator/lib/certtool"
 )
 
 var buildCACmd = &cobra.Command{
@@ -27,12 +28,12 @@ func buildCAFn(cmd *cobra.Command, args []string) {
 	}
 
 	certFile := path.Join(workdir, fmt.Sprintf("%s.crt", basename))
-	if err := ovpncfg.WriteCert(caCert, certFile); err != nil {
+	if err := generator.WriteCert(caCert, certFile); err != nil {
 		log.Fatal("failed to write certificate: ", err)
 	}
 
 	keyFile := path.Join(workdir, fmt.Sprintf("%s.key", basename))
-	if err := ovpncfg.WriteKey(caKey, keyFile); err != nil {
+	if err := generator.WriteKey(caKey, keyFile); err != nil {
 		log.Fatal("failed to write key: ", err)
 	}
 

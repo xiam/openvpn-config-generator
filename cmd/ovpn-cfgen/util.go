@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/pem"
 	"fmt"
-	"github.com/spf13/cobra"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 func checkFile(cmd *cobra.Command, file string, message string) {
